@@ -1,7 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const PORT = 3000;
-
+const mongoose = require('mongoose');
+const port = 3000;
+app.use(express.json());
 
 
 
@@ -23,6 +25,11 @@ app.delete('/user', (req, res) => {
 });
 
 
-app.listen(3000, () => {
-  console.log('Server is running');
+mongoose.
+connect(process.env.MONGO_URI)
+.then(() => {
+    console.log("Connected to MongoDB");
+    app.listen(port, () => {
+        console.log(`listening to ${port}`);
+      });
 });
