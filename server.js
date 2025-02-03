@@ -1,58 +1,44 @@
 const express = require("express");
 const fetch = require("node-fetch");
 const app = express();
-const port = 3000;
-
-
-// Middleware
 app.use(express.json());
+const port = 3000;
 
 //Temporary placeholder
 const NET_API_URL = "http://localhost:5013";
 
 
 app.get("/potatoes", async (req, res) => {
-    try{
+    try {
         const response = await globalThis.fetch(`${NET_API_URL}/potatoes`);
-        const data = await response.json();
-        res.json(data);
-    } catch (error) {
-        res.status(500).json({error: "Failed to fetch data from .NET API"});
+        res.json(await response.json());
+    } catch {
+        res.status(500).json({ error: "Failed to fetch" });
     }
 });
 
 app.post("/potatoes", async (req, res) => {
     try {
-        const newData = req.body;
+        const { name, type } = req.body;
+        if (!name || !type) return res.status(400).json({ error: "Missing required fields" });
 
-        // ✅ Debugging: Log request data
-        console.log("Received data from frontend:", newData);
-
-        if (!newData || !newData.name || !newData.type) {
-            return res.status(400).json({ error: "Missing required fields: name and type" });
-        }
-
-        console.log("Sending data to .NET API:", newData); // ✅ Debugging before sending
+        console.log("Sending to .NET API:", req.body);
 
         const response = await fetch(`${NET_API_URL}/potatoes`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newData)
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(req.body)
         });
 
-        const result = await response.json();
-        console.log("Response from .NET API:", result); // ✅ Debugging response
-        res.json({ message: "Data sent successfully", response: result });
-
+        res.json({ message: "Data sent", response: await response.json() });
     } catch (error) {
-        console.error("Error sending data to .NET API:", error); // ✅ Log any errors
-        res.status(500).json({ error: "Failed to send data to .NET API" });
+        console.error("Error:", error);
+        res.status(500).json({ error: "Failed to send data" });
     }
 });
 
 
+
 app.listen(port, () => {
-    console.log("Wallabilla it's running");
+    console.log("Wallabilla it's running!");
 });
