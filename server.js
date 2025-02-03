@@ -1,9 +1,8 @@
 const express = require("express");
 const fetch = require("node-fetch");
 const app = express();
-
-
 const port = 3000;
+
 
 // Middleware
 app.use(express.json());
@@ -12,7 +11,7 @@ app.use(express.json());
 const NET_API_URL = "http://localhost:5013";
 
 
-app.get("/fetch-from-dotnet", async (req, res) => {
+app.get("/potatoes", async (req, res) => {
     try{
         const response = await globalThis.fetch(`${NET_API_URL}/potatoes`);
         const data = await response.json();
@@ -22,7 +21,7 @@ app.get("/fetch-from-dotnet", async (req, res) => {
     }
 });
 
-app.post("/add-to-dotnet", async (req, res) => {
+app.post("/potatoes", async (req, res) => {
     try {
         const newData = req.body;
 
