@@ -8,23 +8,23 @@ const port = 3000;
 const NET_API_URL = "http://localhost:5013";
 
 
-app.get("/potatoes", async (req, res) => {
+app.get("/potatisar", async (req, res) => {
     try {
-        const response = await globalThis.fetch(`${NET_API_URL}/potatoes`);
+        const response = await globalThis.fetch(`${NET_API_URL}/potatisar`);
         res.json(await response.json());
     } catch {
         res.status(500).json({ error: "Failed to fetch" });
     }
 });
 
-app.post("/potatoes", async (req, res) => {
+app.post("/potatisar", async (req, res) => {
     try {
         const { name, type } = req.body;
         if (!name || !type) return res.status(400).json({ error: "Missing required fields" });
 
         console.log("Sending to .NET API:", req.body);
 
-        const response = await fetch(`${NET_API_URL}/potatoes`, {
+        const response = await fetch(`${NET_API_URL}/potatisar`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(req.body)
