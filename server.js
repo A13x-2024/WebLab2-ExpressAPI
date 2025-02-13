@@ -1,30 +1,30 @@
 const express = require("express");
-const fetch = require("node-fetch");
 const app = express();
+const cors = require("cors");
+const fetch = globalThis.fetch || require("node-fetch");
 app.use(express.json());
 const port = 3000;
 
-//Temporary placeholder
-const NET_API_URL = "labb2-web-gpgmftgjahawhmg3.westeurope-01.azurewebsites.net";
-
+const NET_API_URL = "https://labb2-web-gpgmftgjahawhmg3.westeurope-01.azurewebsites.net";
 
 app.get("/potatisar", async (req, res) => {
     try {
-        const response = await globalThis.fetch(`${NET_API_URL}/potatisar`);
+        const response = await fetch(`${NET_API_URL}/potatisar`);
         res.json(await response.json());
-    } catch {
+    } catch (error) {
+        console.error("Error fetching data:", error);
         res.status(500).json({ error: "Failed to fetch" });
     }
 });
 
-app.post("/potatisar", async (req, res) => {
+app.post("/potatis", async (req, res) => {
     try {
-        const { name, type } = req.body;
-        if (!name || !type) return res.status(400).json({ error: "Missing required fields" });
+        const { name, type, rank } = req.body;
+        if (!name || !type || !rank) return res.status(400).json({ error: "Missing required fields" });
 
         console.log("Sending to .NET API:", req.body);
 
-        const response = await fetch(`${NET_API_URL}/potatisar`, {
+        const response = await fetch(`${NET_API_URL}/potatis`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(req.body)
@@ -36,8 +36,6 @@ app.post("/potatisar", async (req, res) => {
         res.status(500).json({ error: "Failed to send data" });
     }
 });
-
-
 
 app.listen(port, () => {
     console.log("Wallabilla it's running!");
