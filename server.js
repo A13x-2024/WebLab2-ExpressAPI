@@ -5,7 +5,7 @@ app.use(express.json());
 const port = 3000;
 
 //Temporary placeholder
-const NET_API_URL = "http://localhost:5013";
+const NET_API_URL = "labb2-web-gpgmftgjahawhmg3.westeurope-01.azurewebsites.net";
 
 
 app.get("/potatisar", async (req, res) => {
